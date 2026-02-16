@@ -382,7 +382,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     storeInfo?.name ??
                                     AppConstants.defaultStoreName,
                                 onTap: () => _showEditDialog(
-                                  title: 'Edit Nama Toko',
+                                  title: 'Ubah Data Nama Toko',
                                   currentValue:
                                       storeInfo?.name ??
                                       AppConstants.defaultStoreName,
@@ -401,7 +401,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     storeInfo?.address ??
                                     AppConstants.defaultStoreAddress,
                                 onTap: () => _showEditDialog(
-                                  title: 'Edit Alamat',
+                                  title: 'Ubah Data Alamat',
                                   currentValue:
                                       storeInfo?.address ??
                                       AppConstants.defaultStoreAddress,
@@ -421,7 +421,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     storeInfo?.phone ??
                                     AppConstants.defaultStorePhone,
                                 onTap: () => _showEditDialog(
-                                  title: 'Edit Nomor HP',
+                                  title: 'Ubah Data Nomor HP',
                                   currentValue:
                                       storeInfo?.phone ??
                                       AppConstants.defaultStorePhone,
@@ -520,7 +520,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     storeInfo?.invoicePrefix ??
                                     AppConstants.defaultInvoicePrefix,
                                 onTap: () => _showEditDialog(
-                                  title: 'Edit Prefix Invoice',
+                                  title: 'Ubah Data Prefix Invoice',
                                   currentValue:
                                       storeInfo?.invoicePrefix ??
                                       AppConstants.defaultInvoicePrefix,

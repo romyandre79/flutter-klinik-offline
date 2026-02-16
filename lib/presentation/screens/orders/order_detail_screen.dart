@@ -498,7 +498,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         ),
                         const SizedBox(height: AppSpacing.md),
                         Text(
-                          'Order tidak ditemukan',
+                          'Penjualan tidak ditemukan',
                           style: AppTypography.bodyMedium.copyWith(
                             color: AppThemeColors.textSecondary,
                           ),

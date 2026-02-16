@@ -173,7 +173,7 @@ class _ServiceFormScreenState extends State<ServiceFormScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      isEditing ? 'Edit Layanan' : 'Tambah Layanan',
+                      isEditing ? 'Ubah Data Layanan' : 'Tambah Layanan',
                       style: AppTypography.headlineSmall.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

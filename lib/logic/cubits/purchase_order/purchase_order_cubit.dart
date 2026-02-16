@@ -23,8 +23,8 @@ class PurchaseOrderCubit extends Cubit<PurchaseOrderState> {
   Future<void> createPurchaseOrder(PurchaseOrder po) async {
     try {
       emit(PoLoading());
-      await _repository.createPurchaseOrder(po);
-      emit(const PoOperationSuccess('Pembelian created successfully'));
+      final newPo = await _repository.createPurchaseOrder(po);
+      emit(PoOperationSuccess('Pembelian created successfully', purchaseOrder: newPo));
       loadPurchaseOrders();
     } catch (e) {
       emit(PoError('Failed to create purchase order: ${e.toString()}'));

@@ -13,6 +13,7 @@ import 'package:flutter_pos_offline/logic/cubits/supplier/supplier_state.dart';
 import 'package:flutter_pos_offline/data/models/product.dart';
 import 'package:flutter_pos_offline/logic/cubits/product/product_cubit.dart';
 import 'package:flutter_pos_offline/logic/cubits/product/product_state.dart';
+import 'package:flutter_pos_offline/presentation/screens/purchasing/purchase_order_detail_screen.dart';
 
 class PurchaseOrderCreateScreen extends StatefulWidget {
   const PurchaseOrderCreateScreen({super.key});
@@ -137,7 +138,21 @@ class _PurchaseOrderCreateScreenState extends State<PurchaseOrderCreateScreen> {
         listener: (context, state) {
           if (state is PoOperationSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
-            Navigator.pop(context);
+            if (state.purchaseOrder != null) {
+              // Replace current screen with Detail Screen
+              final poCubit = context.read<PurchaseOrderCubit>();
+               Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider.value(
+                    value: poCubit,
+                    child: PurchaseOrderDetailScreen(order: state.purchaseOrder!),
+                  ),
+                ),
+              );
+            } else {
+              Navigator.pop(context);
+            }
           } else if (state is PoError) {
              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message), backgroundColor: Colors.red));
           }
@@ -189,7 +204,7 @@ class _PurchaseOrderCreateScreenState extends State<PurchaseOrderCreateScreen> {
             // Items List
             Expanded(
               child: _items.isEmpty
-                  ? const Center(child: Text('No items added'))
+                  ? const Center(child: Text('Tidak ada Item'))
                   : ListView.builder(
                       itemCount: _items.length,
                       itemBuilder: (context, index) {
@@ -469,7 +484,7 @@ class _PurchaseOrderItemEditorState extends State<PurchaseOrderItemEditor> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.sm)),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
-                  child: Text(widget.existingItem != null ? 'Update' : 'Add'),
+                  child: Text(widget.existingItem != null ? 'Update' : 'Tambah Data'),
                 ),
               ),
             ],

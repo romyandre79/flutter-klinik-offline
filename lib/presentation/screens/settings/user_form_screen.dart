@@ -345,7 +345,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      isEditing ? 'Edit User' : 'Tambah User',
+                      isEditing ? 'Ubah Data User' : 'Tambah User',
                       style: AppTypography.headlineSmall.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -558,7 +558,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
     final permissions = isOwner
         ? [
             _PermissionItem('Dashboard', 'Full access', true),
-            _PermissionItem('Orders', 'Full CRUD', true),
+            _PermissionItem('Penjualans', 'Full CRUD', true),
             _PermissionItem('Services', 'Full CRUD', true),
             _PermissionItem('Customers', 'Full + Export', true),
             _PermissionItem('Master Item', 'Full CRUD', true),
@@ -569,7 +569,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
           ]
         : [
             _PermissionItem('Dashboard', 'View only', true),
-            _PermissionItem('Orders', 'Create, View, Update', true),
+            _PermissionItem('Penjualans', 'Create, View, Update', true),
             _PermissionItem('Services', 'View only', true),
             _PermissionItem('Customers', 'View only', true),
             _PermissionItem('Master Item', 'View only', true),

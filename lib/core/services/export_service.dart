@@ -61,10 +61,10 @@ class ExportService {
     sheet.cell(CellIndex.indexByString('A6')).value = TextCellValue('Total Penjualan');
     sheet.cell(CellIndex.indexByString('B6')).value = IntCellValue(reportData.totalOrders);
 
-    sheet.cell(CellIndex.indexByString('A7')).value = TextCellValue('Order Selesai');
+    sheet.cell(CellIndex.indexByString('A7')).value = TextCellValue('Penjualan Selesai');
     sheet.cell(CellIndex.indexByString('B7')).value = IntCellValue(reportData.completedOrders);
 
-    sheet.cell(CellIndex.indexByString('A8')).value = TextCellValue('Order Pending');
+    sheet.cell(CellIndex.indexByString('A8')).value = TextCellValue('Penjualan Pending');
     sheet.cell(CellIndex.indexByString('B8')).value = IntCellValue(reportData.pendingOrders);
 
     sheet.cell(CellIndex.indexByString('A10')).value = TextCellValue('Total Omzet');

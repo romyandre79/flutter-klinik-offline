@@ -424,7 +424,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
             _buildActionTile(
               icon: Icons.edit_outlined,
               iconColor: AppThemeColors.primary,
-              title: 'Edit User',
+              title: 'Ubah Data User',
               subtitle: 'Ubah nama dan role',
               onTap: () {
                 Navigator.pop(bottomSheetContext);

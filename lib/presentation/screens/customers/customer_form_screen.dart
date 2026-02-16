@@ -172,7 +172,7 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      isEditing ? 'Edit Pelanggan' : 'Tambah Pelanggan',
+                      isEditing ? 'Ubah Data Pelanggan' : 'Tambah Pelanggan',
                       style: AppTypography.headlineSmall.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

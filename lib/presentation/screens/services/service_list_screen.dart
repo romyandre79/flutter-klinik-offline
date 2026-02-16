@@ -420,7 +420,7 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
                           ),
                           const SizedBox(width: AppSpacing.sm),
                           Text(
-                            'Edit',
+                            'Ubah Data',
                             style: AppTypography.bodyMedium,
                           ),
                         ],

@@ -7,6 +7,8 @@ import 'package:flutter_pos_offline/logic/cubits/purchase_order/purchase_order_c
 import 'package:flutter_pos_offline/logic/cubits/purchase_order/purchase_order_state.dart';
 import 'package:flutter_pos_offline/logic/cubits/supplier/supplier_cubit.dart';
 import 'package:flutter_pos_offline/presentation/screens/purchasing/purchase_order_create_screen.dart';
+import 'package:flutter_pos_offline/presentation/screens/purchasing/purchase_order_detail_screen.dart';
+import 'package:flutter_pos_offline/data/repositories/purchase_order_repository.dart';
 import 'package:flutter_pos_offline/logic/cubits/auth/auth_cubit.dart';
 import 'package:flutter_pos_offline/logic/cubits/auth/auth_state.dart';
 import 'package:flutter_pos_offline/data/models/user.dart';
@@ -100,54 +102,30 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
               itemBuilder: (context, index) {
                 final po = state.purchaseOrders[index];
                 return Card(
-                  child: ExpansionTile(
-                    title: Text('${po.supplier?.name}'),
+                  child: ListTile(
+                    onTap: () async {
+                      // Fetch full PO with items
+                      final repo = context.read<PurchaseOrderRepository>();
+                      final fullPo = await repo.getPurchaseOrderById(po.id!);
+                      if (fullPo != null && context.mounted) {
+                        final poCubit = context.read<PurchaseOrderCubit>();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider.value(
+                              value: poCubit,
+                              child: PurchaseOrderDetailScreen(order: fullPo),
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    title: Text('${po.supplier?.name ?? "Unknown"}'),
                     subtitle: Text('${DateFormatter.formatDate(po.orderDate)} - ${po.status.toUpperCase()}'),
                     trailing: Text(
                       CurrencyFormatter.format(po.totalAmount),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    children: [
-                       if (po.status == 'pending')
-                         Padding(
-                           padding: const EdgeInsets.all(8.0),
-                           child: Row(
-                             mainAxisAlignment: MainAxisAlignment.end,
-                             children: [
-                               if (context.read<AuthCubit>().state is AuthAuthenticated && (context.read<AuthCubit>().state as AuthAuthenticated).user.role == UserRole.owner)
-                                 TextButton(
-                                   onPressed: () {
-                                     showDialog(
-                                       context: context,
-                                       builder: (ctx) => AlertDialog(
-                                         title: const Text('Delete Pembelian?'),
-                                         content: const Text('Are you sure you want to delete this order?'),
-                                         actions: [
-                                            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(ctx);
-                                                context.read<PurchaseOrderCubit>().deletePurchaseOrder(po.id!);
-                                              },
-                                              child: const Text('Delete', style: TextStyle(color: Colors.red)),
-                                            ),
-                                         ],
-                                       ),
-                                     );
-                                   },
-                                   child: const Text('Delete', style: TextStyle(color: Colors.red)),
-                                 ),
-                               const SizedBox(width: 8),
-                               OutlinedButton(
-                                 onPressed: () {
-                                    context.read<PurchaseOrderCubit>().updateStatus(po.id!, 'received'); // Simple status update for now
-                                 },
-                                 child: const Text('Mark Received'),
-                               ),
-                             ],
-                           ),
-                         ),
-                    ],
                   ),
                 );
               },

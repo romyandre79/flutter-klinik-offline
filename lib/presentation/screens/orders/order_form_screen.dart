@@ -434,7 +434,7 @@ class _OrderFormScreenState extends State<OrderFormScreen> {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Order ${state.order.invoiceNo} berhasil dibuat'),
+              content: Text('Penjualan ${state.order.invoiceNo} berhasil dibuat'),
               backgroundColor: AppColors.success,
             ),
           );

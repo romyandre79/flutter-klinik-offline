@@ -443,7 +443,7 @@ class _ProductListScreenState extends State<ProductListScreen> with SingleTicker
                             ),
                             const SizedBox(width: AppSpacing.sm),
                             Text(
-                              'Edit',
+                              'Ubah Data',
                               style: AppTypography.bodyMedium,
                             ),
                           ],

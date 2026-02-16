@@ -32,9 +32,10 @@ class PoError extends PurchaseOrderState {
 
 class PoOperationSuccess extends PurchaseOrderState {
   final String message;
+  final PurchaseOrder? purchaseOrder;
 
-  const PoOperationSuccess(this.message);
+  const PoOperationSuccess(this.message, {this.purchaseOrder});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, purchaseOrder];
 }

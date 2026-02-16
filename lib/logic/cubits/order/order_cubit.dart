@@ -230,13 +230,13 @@ class OrderCubit extends Cubit<OrderState> {
       // Get order to check remaining payment
       final order = await _orderRepository.getOrderById(orderId);
       if (order == null) {
-        emit(const OrderError('Order tidak ditemukan'));
+        emit(const OrderError('Penjualan tidak ditemukan'));
         return;
       }
 
       final remaining = order.remainingPayment;
       if (remaining <= 0) {
-        emit(const OrderError('Order sudah lunas'));
+        emit(const OrderError('Penjualan sudah lunas'));
         return;
       }
 
@@ -272,7 +272,7 @@ class OrderCubit extends Cubit<OrderState> {
       if (order != null) {
         emit(OrderDetailLoaded(order));
       } else {
-        emit(const OrderError('Order tidak ditemukan'));
+        emit(const OrderError('Penjualan tidak ditemukan'));
       }
     } catch (e) {
       emit(OrderError(e.toString().replaceAll('Exception: ', '')));
@@ -285,7 +285,7 @@ class OrderCubit extends Cubit<OrderState> {
 
     try {
       await _orderRepository.deleteOrder(orderId);
-      emit(const OrderOperationSuccess('Order berhasil dihapus'));
+      emit(const OrderOperationSuccess('Penjualan berhasil dihapus'));
 
       // Reload orders
       await loadOrders(status: _currentFilter);

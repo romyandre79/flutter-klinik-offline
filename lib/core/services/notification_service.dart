@@ -36,7 +36,7 @@ class NotificationService {
       await _scheduleNotification(
         id: order.id! * 10 + 2, // Unique ID for 2-day reminder
         title: 'Reminder: Order #${order.invoiceNo}',
-        body: 'Order for ${order.customerName} is due in 2 days.',
+        body: 'Penjualan for ${order.customerName} is due in 2 days.',
         scheduledDate: reminder2Days,
       );
     }
@@ -47,7 +47,7 @@ class NotificationService {
       await _scheduleNotification(
         id: order.id! * 10 + 1, // Unique ID for 1-day reminder
         title: 'Urgent: Order #${order.invoiceNo}',
-        body: 'Order for ${order.customerName} is due tomorrow!',
+        body: 'Penjualan for ${order.customerName} is due tomorrow!',
         scheduledDate: reminder1Day,
       );
     }
@@ -67,7 +67,7 @@ class NotificationService {
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'order_reminders',
-          'Order Reminders',
+          'Penjualan Reminders',
           channelDescription: 'Notifications for upcoming order due dates',
           importance: Importance.high,
           priority: Priority.high,

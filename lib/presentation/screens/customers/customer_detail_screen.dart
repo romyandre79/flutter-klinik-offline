@@ -208,7 +208,7 @@ class CustomerDetailScreen extends StatelessWidget {
                 Expanded(
                   child: _buildStatItem(
                     icon: Icons.update_outlined,
-                    label: 'Order Terakhir',
+                    label: 'Penjualan Terakhir',
                     value: customer.lastOrderDate != null
                         ? DateFormatter.formatDate(customer.lastOrderDate!)
                         : 'Belum ada',

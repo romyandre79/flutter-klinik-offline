@@ -174,7 +174,7 @@ class WhatsAppService {
       case 'done':
         buffer.writeln('✅ *Terima kasih!*');
         buffer.writeln();
-        buffer.writeln('Order ${order.invoiceNumber} telah selesai.');
+        buffer.writeln('Penjualan ${order.invoiceNumber} telah selesai.');
         buffer.writeln('Terima kasih telah berbelanja di tempat kami.');
         buffer.writeln();
         buffer.writeln('Sampai jumpa di kunjungan berikutnya! 🙏');

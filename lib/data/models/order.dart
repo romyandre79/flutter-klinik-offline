@@ -34,7 +34,7 @@ extension OrderStatusExtension on OrderStatus {
   String get description {
     switch (this) {
       case OrderStatus.pending:
-        return 'Order baru masuk';
+        return 'Penjualan baru masuk';
       case OrderStatus.process:
         return 'Sedang dikerjakan';
       case OrderStatus.ready:

@@ -99,17 +99,43 @@ class PurchaseOrderRepository {
   }
 
   // Update PO Status (e.g., to 'received')
+  // When status is 'received', also update product stock
   Future<void> updatePurchaseOrderStatus(int id, String status) async {
     final db = await _databaseHelper.database;
-    await db.update(
-      'purchase_orders',
-      {
-        'status': status,
-        'updated_at': DateTime.now().toIso8601String(),
-      },
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+
+    await db.transaction((txn) async {
+      // Update PO status
+      await txn.update(
+        'purchase_orders',
+        {
+          'status': status,
+          'updated_at': DateTime.now().toIso8601String(),
+        },
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+      // If received, update product stock
+      if (status == 'received') {
+        final items = await txn.query(
+          'purchase_order_items',
+          where: 'purchase_order_id = ?',
+          whereArgs: [id],
+        );
+
+        for (final item in items) {
+          final productId = item['product_id'] as int?;
+          final quantity = item['quantity'] as int;
+
+          if (productId != null) {
+            await txn.rawUpdate(
+              'UPDATE products SET stock = COALESCE(stock, 0) + ?, updated_at = ? WHERE id = ?',
+              [quantity, DateTime.now().toIso8601String(), productId],
+            );
+          }
+        }
+      }
+    });
   }
 
   // Delete PO (Cascade delete items handled by DB schema if configured, but safe to do manual or rely on FK)

@@ -80,7 +80,7 @@ class CartPanel extends StatelessWidget {
           context.read<PosCubit>().clearCart();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Order ${state.order.invoiceNo} berhasil dibuat'),
+              content: Text('Penjualan ${state.order.invoiceNo} berhasil dibuat'),
               backgroundColor: AppThemeColors.success,
             ),
           );
