@@ -131,6 +131,21 @@ class _SalesOrderItemEditorState extends State<SalesOrderItemEditor> {
       return;
     }
 
+    // Validate Stock
+    if (_selectedProduct != null && _selectedProduct!.isGoods) {
+      final currentStock = _selectedProduct!.stock ?? 0;
+      if (qty > currentStock) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                'Stok ${_selectedProduct!.name} tidak mencukupi (Sisa: ${currentStock.toStringAsFixed(0)})'),
+            backgroundColor: AppThemeColors.error,
+          ),
+        );
+        return;
+      }
+    }
+
     // Prepare item
     final item = OrderItem(
       id: widget.existingItem?.id, // Keep ID if editing

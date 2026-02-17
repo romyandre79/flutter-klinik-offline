@@ -212,6 +212,17 @@ class _OrderFormScreenState extends State<OrderFormScreen> {
 
     final payment = ThousandSeparatorFormatter.parseToInt(_paymentController.text);
 
+    // Validate Status 'Selesai' must be fully paid
+    if (_selectedStatus == OrderStatus.done && payment < _totalPrice) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Pesanan harus lunas jika status Selesai'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
     // Jika bayar lebih dari total, tampilkan dialog konfirmasi kembalian
     if (payment > _totalPrice) {
       _showChangeConfirmationDialog(payment);

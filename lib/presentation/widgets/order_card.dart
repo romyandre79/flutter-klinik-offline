@@ -36,12 +36,24 @@ class OrderCard extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(
-                        order.invoiceNo,
-                        style: AppTypography.titleMedium.copyWith(
-                          color: AppThemeColors.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            order.invoiceNo,
+                            style: AppTypography.titleMedium.copyWith(
+                              color: AppThemeColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            DateFormatter.formatDateTime(order.orderDate),
+                            style: AppTypography.labelSmall.copyWith(
+                              color: AppThemeColors.textSecondary,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     _buildStatusBadge(),

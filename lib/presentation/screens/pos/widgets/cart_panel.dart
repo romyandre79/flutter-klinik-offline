@@ -19,6 +19,36 @@ class CartPanel extends StatelessWidget {
   void _handleCharge(BuildContext context, int totalAmount) {
     // Capture the cubit from the current context
     final posCubit = context.read<PosCubit>();
+    final state = posCubit.state;
+
+    if (state is! PosLoaded) return;
+
+    // Validate Status and Stock
+    for (final item in state.cartItems) {
+      if (item.quantity <= 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Jumlah item tidak boleh 0'),
+            backgroundColor: AppThemeColors.error,
+          ),
+        );
+        return;
+      }
+
+      if (item.product.isGoods) {
+        final currentStock = item.product.stock ?? 0;
+        if (item.quantity > currentStock) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  'Stok ${item.product.name} tidak mencukupi (Sisa: ${currentStock.toStringAsFixed(0)})'),
+              backgroundColor: AppThemeColors.error,
+            ),
+          );
+          return;
+        }
+      }
+    }
     
     showDialog(
       context: context,

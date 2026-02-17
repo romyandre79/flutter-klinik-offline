@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pos_offline/core/theme/app_theme.dart';
 import 'package:flutter_pos_offline/core/utils/currency_formatter.dart';
+import 'package:flutter_pos_offline/core/utils/date_formatter.dart';
 import 'package:flutter_pos_offline/data/models/order.dart';
 import 'package:flutter_pos_offline/data/models/user.dart';
 import 'package:flutter_pos_offline/logic/cubits/auth/auth_cubit.dart';
@@ -514,6 +515,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          'Ringkasan Hari Ini (${DateFormatter.formatDate(DateTime.now())})',
+          style: AppTypography.titleMedium.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         const SizedBox(height: AppSpacing.md),
         Row(
           children: [

@@ -558,22 +558,21 @@ class _UserFormScreenState extends State<UserFormScreen> {
     final permissions = isOwner
         ? [
             _PermissionItem('Dashboard', 'Full access', true),
-            _PermissionItem('Penjualans', 'Full CRUD', true),
-            _PermissionItem('Services', 'Full CRUD', true),
-            _PermissionItem('Customers', 'Full + Export', true),
+            _PermissionItem('Penjualan', 'Full CRUD', true),
+            _PermissionItem('Pembelian', 'Full CRUD', true),
+            _PermissionItem('Master Pelanggan', 'Full + Export', true),
             _PermissionItem('Master Item', 'Full CRUD', true),
-            _PermissionItem('Supplier', 'Full CRUD', true),
+            _PermissionItem('Master Supplier', 'Full CRUD', true),
             _PermissionItem('Reports', 'Full + Export', true),
             _PermissionItem('Settings', 'Full access', true),
             _PermissionItem('User Management', 'Full CRUD', true),
           ]
         : [
             _PermissionItem('Dashboard', 'View only', true),
-            _PermissionItem('Penjualans', 'Create, View, Update', true),
-            _PermissionItem('Services', 'View only', true),
-            _PermissionItem('Customers', 'View only', true),
+            _PermissionItem('Penjualan', 'Create, View, Update', true),
+            _PermissionItem('Master Pelanggan', 'View only', true),
             _PermissionItem('Master Item', 'View only', true),
-            _PermissionItem('Supplier', 'View only', true),
+            _PermissionItem('Master Supplier', 'View only', true),
           ];
 
     return Container(

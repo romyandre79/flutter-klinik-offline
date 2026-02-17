@@ -888,9 +888,14 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   }
 
   void _confirmStatusUpdate(Order order, OrderStatus newStatus) {
-    // Jika update ke Selesai tapi belum lunas, buka dialog pembayaran
+    // Jika update ke Selesai tapi belum lunas, tolak
     if (newStatus == OrderStatus.done && !order.isPaid) {
-      _showAddPaymentDialog(order);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Pesanan harus lunas sebelum status Selesai'),
+          backgroundColor: AppThemeColors.error,
+        ),
+      );
       return;
     }
 

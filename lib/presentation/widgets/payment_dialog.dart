@@ -262,6 +262,18 @@ class _PaymentDialogState extends State<PaymentDialog> {
         ElevatedButton(
           onPressed: () {
             final paid = ThousandSeparatorFormatter.parseToInt(_paymentController.text);
+            
+            // Validate Selesai status
+            if (_orderStatus == OrderStatus.done && paid < widget.totalAmount) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Pesanan harus lunas jika status Selesai'),
+                  backgroundColor: AppThemeColors.error,
+                ),
+              );
+              return;
+            }
+
             widget.onConfirm(paid, _paymentMethod, _orderStatus, _dueDate);
             Navigator.pop(context);
           },

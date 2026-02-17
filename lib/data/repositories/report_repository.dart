@@ -1,6 +1,11 @@
 import 'package:flutter_pos_offline/data/database/database_helper.dart';
 import 'package:flutter_pos_offline/data/models/order.dart';
 import 'package:flutter_pos_offline/logic/cubits/report/report_state.dart';
+import 'package:flutter_pos_offline/data/models/order_item.dart';
+import 'package:flutter_pos_offline/data/models/purchase_order.dart';
+import 'package:flutter_pos_offline/data/models/purchase_order_item.dart';
+import 'package:flutter_pos_offline/data/models/supplier.dart';
+import 'package:flutter_pos_offline/data/models/product.dart';
 
 class ReportRepository {
   final DatabaseHelper _databaseHelper;
@@ -229,5 +234,101 @@ class ReportRepository {
       dailyRevenue: dailyRevenue,
       topServices: topServices,
     );
+  }
+
+  /// Get orders with items for export
+  Future<List<Order>> getOrdersWithItemsByDateRange(
+    DateTime startDate,
+    DateTime endDate,
+  ) async {
+    final db = await _databaseHelper.database;
+    final start = DateTime(startDate.year, startDate.month, startDate.day);
+    final end = DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59);
+
+    // Get orders
+    final orderMaps = await db.query(
+      'orders',
+      where: 'order_date BETWEEN ? AND ?',
+      whereArgs: [start.toIso8601String(), end.toIso8601String()],
+      orderBy: 'order_date DESC',
+    );
+
+    final orders = <Order>[];
+
+    for (final map in orderMaps) {
+      final order = Order.fromMap(map);
+      
+      // Get items for this order
+      final itemMaps = await db.query(
+        'order_items',
+        where: 'order_id = ?',
+        whereArgs: [order.id],
+      );
+
+      final items = itemMaps.map((m) => OrderItem.fromMap(m)).toList();
+      orders.add(order.copyWith(items: items));
+    }
+
+    return orders;
+  }
+
+  /// Get purchase orders with items for export
+  Future<List<PurchaseOrder>> getPurchasesWithItemsByDateRange(
+    DateTime startDate,
+    DateTime endDate,
+  ) async {
+    final db = await _databaseHelper.database;
+    final start = DateTime(startDate.year, startDate.month, startDate.day);
+    final end = DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59);
+
+    // Get purchases
+    final purchaseMaps = await db.query(
+      'purchase_orders',
+      where: 'order_date BETWEEN ? AND ? AND status != ?',
+      whereArgs: [start.toIso8601String(), end.toIso8601String(), 'cancelled'],
+      orderBy: 'order_date DESC',
+    );
+
+    final purchases = <PurchaseOrder>[];
+
+    for (final map in purchaseMaps) {
+      // Need provider to map supplier, but for report simple data might be enough
+      // or we just fetch supplier name if needed. 
+      // For now, let's just map the PO.
+      // Ideally we should join supplier table or fetch it.
+      
+      var purchase = PurchaseOrder.fromMap(map);
+      
+      // Fetch Supplier
+      final supplierMaps = await db.query(
+        'suppliers',
+        where: 'id = ?',
+        whereArgs: [purchase.supplierId],
+      );
+      
+      if (supplierMaps.isNotEmpty) {
+        final supplier = Supplier.fromMap(supplierMaps.first);
+        purchase = purchase.copyWith(supplier: supplier);
+      }
+
+      // Get items
+      final itemMaps = await db.query(
+        'purchase_order_items',
+        where: 'purchase_order_id = ?',
+        whereArgs: [purchase.id],
+      );
+
+      final items = itemMaps.map((m) => PurchaseOrderItem.fromMap(m)).toList();
+      purchases.add(purchase.copyWith(items: items));
+    }
+
+    return purchases;
+  }
+
+  /// Get all products for stock report
+  Future<List<Product>> getAllProducts() async {
+    final db = await _databaseHelper.database;
+    final maps = await db.query('products', orderBy: 'name ASC');
+    return maps.map((m) => Product.fromMap(m)).toList();
   }
 }

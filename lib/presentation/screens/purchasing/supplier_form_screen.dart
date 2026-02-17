@@ -144,7 +144,7 @@ class _SupplierFormScreenState extends State<SupplierFormScreen> {
                 const SizedBox(height: AppSpacing.md),
                 TextFormField(
                   controller: _addressController,
-                  decoration: const InputDecoration(labelText: 'Tambah Dataress'),
+                  decoration: const InputDecoration(labelText: 'Deskripsi (opsional)'),
                   maxLines: 3,
                 ),
                 const SizedBox(height: AppSpacing.xl),
