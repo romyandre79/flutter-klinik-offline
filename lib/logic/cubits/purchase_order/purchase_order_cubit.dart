@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pos_offline/data/models/purchase_order.dart';
 import 'package:flutter_pos_offline/data/repositories/purchase_order_repository.dart';
 import 'package:flutter_pos_offline/logic/cubits/purchase_order/purchase_order_state.dart';
+import 'package:flutter_pos_offline/core/constants/app_constants.dart';
 
 class PurchaseOrderCubit extends Cubit<PurchaseOrderState> {
   final PurchaseOrderRepository _repository;
@@ -22,6 +23,15 @@ class PurchaseOrderCubit extends Cubit<PurchaseOrderState> {
 
   Future<void> createPurchaseOrder(PurchaseOrder po) async {
     try {
+      if (AppConstants.isDemoMode) {
+        final pos = await _repository.getAllPurchaseOrders();
+        if (pos.length >= 10) {
+          emit(const PoError('Anda telah melebihi batas transaksi aplikasi demo, silakan beli hubungi Sales Kreatif atau ke 081932701147'));
+          emit(PoLoaded(pos));
+          return;
+        }
+      }
+
       emit(PoLoading());
       final newPo = await _repository.createPurchaseOrder(po);
       emit(PoOperationSuccess('Pembelian created successfully', purchaseOrder: newPo));

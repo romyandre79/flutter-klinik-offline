@@ -56,5 +56,5 @@ class AppConstants {
   static const String defaultStoreAddress = 'Indonesia';
   static const String defaultStorePhone = '-';
 
-
+  static const bool isDemoMode = true;
 }

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pos_offline/data/models/user.dart';
 import 'package:flutter_pos_offline/data/repositories/user_repository.dart';
 import 'package:flutter_pos_offline/logic/cubits/user/user_state.dart';
+import 'package:flutter_pos_offline/core/constants/app_constants.dart';
 
 class UserCubit extends Cubit<UserState> {
   final UserRepository _userRepository;
@@ -34,6 +35,12 @@ class UserCubit extends Cubit<UserState> {
     bool canAccessSuppliers = false,
     bool canAccessItems = false,
   }) async {
+    if (AppConstants.isDemoMode && _users.length >= 2) {
+      emit(const UserError('Anda telah melebihi batas transaksi aplikasi demo, silakan beli hubungi Sales Kreatif atau ke 081932701147'));
+      emit(UserLoaded(_users)); // Reset state
+      return;
+    }
+
     emit(const UserLoading());
 
     try {

@@ -141,11 +141,33 @@ class _LoginScreenState extends State<LoginScreen>
                             const SizedBox(height: AppSpacing.xl),
 
                             // Title
-                            Text(
-                              'Selamat Datang',
-                              style: AppTypography.displaySmall.copyWith(
-                                color: Colors.white,
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Selamat Datang',
+                                  style: AppTypography.displaySmall.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                if (AppConstants.isDemoMode) ...[
+                                  const SizedBox(width: AppSpacing.sm),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      'Demo',
+                                      style: AppTypography.labelMedium.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ),
 
                             const SizedBox(height: AppSpacing.sm),

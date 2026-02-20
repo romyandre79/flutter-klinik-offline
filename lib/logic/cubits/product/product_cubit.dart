@@ -4,6 +4,7 @@ import 'package:flutter_pos_offline/core/services/import_service.dart';
 import 'package:flutter_pos_offline/data/models/product.dart';
 import 'package:flutter_pos_offline/data/repositories/product_repository.dart';
 import 'package:flutter_pos_offline/logic/cubits/product/product_state.dart';
+import 'package:flutter_pos_offline/core/constants/app_constants.dart';
 
 class ProductCubit extends Cubit<ProductState> {
   final ProductRepository _productRepository;
@@ -24,6 +25,11 @@ class ProductCubit extends Cubit<ProductState> {
   }
 
   Future<void> addProduct(Product product) async {
+    if (AppConstants.isDemoMode && _products.length >= 5) {
+      emit(const ProductError('Anda telah melebihi batas transaksi aplikasi demo, silakan beli hubungi Sales Kreatif atau ke 081932701147'));
+      emit(ProductLoaded(_products));
+      return;
+    }
     emit(ProductLoading());
     try {
       await _productRepository.addProduct(product);

@@ -9,6 +9,7 @@ import 'package:flutter_pos_offline/data/repositories/order_repository.dart';
 import 'package:flutter_pos_offline/data/repositories/payment_repository.dart';
 import 'package:flutter_pos_offline/data/repositories/product_repository.dart';
 import 'package:flutter_pos_offline/logic/cubits/order/order_state.dart';
+import 'package:flutter_pos_offline/core/constants/app_constants.dart';
 
 class OrderCubit extends Cubit<OrderState> {
   final OrderRepository _orderRepository;
@@ -88,6 +89,14 @@ class OrderCubit extends Cubit<OrderState> {
     PaymentMethod paymentMethod = PaymentMethod.cash,
     OrderStatus status = OrderStatus.pending,
   }) async {
+    if (AppConstants.isDemoMode) {
+      final allOrders = await _orderRepository.getAllOrders();
+      if (allOrders.length >= 10) {
+        emit(const OrderError('Anda telah melebihi batas transaksi aplikasi demo, silakan beli hubungi Sales Kreatif atau ke 081932701147'));
+        return;
+      }
+    }
+
     emit(const OrderLoading());
 
     try {
