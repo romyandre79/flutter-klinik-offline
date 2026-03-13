@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:flutter_pos_offline/core/constants/app_constants.dart';
 import 'package:flutter_pos_offline/core/utils/currency_formatter.dart';
 import 'package:flutter_pos_offline/core/utils/date_formatter.dart';
@@ -24,7 +23,7 @@ class PdfService {
     final storePhone = settings[AppConstants.keyStorePhone] ?? AppConstants.defaultStorePhone;
 
     // Load logo if available (optional, for now use text)
-    // final logo = await rootBundle.load('assets/icons/logopos.png');
+    // final logo = await rootBundle.load('assets/icons/logoklinik.png');
     // final image = pw.MemoryImage(logo.buffer.asUint8List());
 
     pdf.addPage(
@@ -86,7 +85,7 @@ class PdfService {
                         pw.Padding(padding: const pw.EdgeInsets.symmetric(vertical: 2), child: pw.Text(CurrencyFormatter.format(item.subtotal), textAlign: pw.TextAlign.right, style: const pw.TextStyle(fontSize: 10))),
                       ],
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
               pw.Divider(),
@@ -131,7 +130,7 @@ class PdfService {
               ],
 
                pw.SizedBox(height: 10),
-               pw.Center(child: pw.Text('Terima Kasih', style: const pw.TextStyle(fontSize: 10, fontStyle: pw.FontStyle.italic))),
+               pw.Center(child: pw.Text('Terima Kasih', style: pw.TextStyle(fontSize: 10, fontStyle: pw.FontStyle.italic))),
             ],
           );
         },

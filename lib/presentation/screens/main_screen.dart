@@ -151,7 +151,7 @@ class _MainScreenState extends State<MainScreen> {
 
         if (isOwner || user.role == UserRole.kasir) {
           if (isLargeScreen) {
-            // Add POS Screen for large screens
+            // Add Klinik Screen for large screens
             // Initialize PosCubit if not already done
             _posCubit ??= PosCubit(context.read<ProductRepository>())..loadProducts();
             
@@ -253,7 +253,7 @@ class _MainScreenState extends State<MainScreen> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() => _currentIndex = index);
-                    // If switching to POS (Kasir) tab, reload products
+                    // If switching to Klinik (Kasir) tab, reload products
                     if (item.label == 'Kasir') {
                       _posCubit?.loadProducts();
                     } else if (item.label == 'Dashboard') {

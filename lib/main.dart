@@ -24,6 +24,10 @@ import 'package:flutter_pos_offline/data/repositories/product_repository.dart';
 import 'package:flutter_pos_offline/data/repositories/payment_repository.dart'; // Add import
 import 'package:flutter_pos_offline/logic/cubits/order/order_cubit.dart';
 import 'package:flutter_pos_offline/core/services/notification_service.dart';
+import 'package:flutter_pos_offline/data/repositories/pengumuman_template_repository.dart';
+import 'package:flutter_pos_offline/data/repositories/stock_transfer_repository.dart';
+import 'package:flutter_pos_offline/logic/cubits/pengumuman/pengumuman_cubit.dart';
+import 'package:flutter_pos_offline/logic/cubits/stock_transfer/stock_transfer_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -75,6 +79,8 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(create: (_) => PurchaseOrderRepository()),
         RepositoryProvider(create: (_) => ProductRepository()),         
         RepositoryProvider(create: (_) => PaymentRepository()), // Add PaymentRepository
+        RepositoryProvider(create: (_) => PengumumanTemplateRepository()),
+        RepositoryProvider(create: (_) => StockTransferRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -91,9 +97,19 @@ class MyApp extends StatelessWidget {
               paymentRepository: context.read<PaymentRepository>(), // Inject PaymentRepository
             )..loadOrders(),
           ),
+          BlocProvider(
+            create: (context) => PengumumanCubit(
+              repository: context.read<PengumumanTemplateRepository>(),
+            )..loadTemplates(),
+          ),
+          BlocProvider(
+            create: (context) => StockTransferCubit(
+              repository: context.read<StockTransferRepository>(),
+            )..loadTransfers(),
+          ),
         ],
         child: MaterialApp(
-          title: 'POS Offline',
+          title: 'Klinik Offline',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           home: AuthWrapper(showOnboarding: showOnboarding),
@@ -156,7 +172,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                       boxShadow: AppShadows.medium,
                     ),
                     child: Image.asset(
-                      'assets/icons/logopos.png',
+                      'assets/icons/logoklinik.png',
                       fit: BoxFit.contain,
                     ),
                   ),

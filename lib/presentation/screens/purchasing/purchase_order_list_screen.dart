@@ -9,9 +9,6 @@ import 'package:flutter_pos_offline/logic/cubits/supplier/supplier_cubit.dart';
 import 'package:flutter_pos_offline/presentation/screens/purchasing/purchase_order_create_screen.dart';
 import 'package:flutter_pos_offline/presentation/screens/purchasing/purchase_order_detail_screen.dart';
 import 'package:flutter_pos_offline/data/repositories/purchase_order_repository.dart';
-import 'package:flutter_pos_offline/logic/cubits/auth/auth_cubit.dart';
-import 'package:flutter_pos_offline/logic/cubits/auth/auth_state.dart';
-import 'package:flutter_pos_offline/data/models/user.dart';
 import 'package:flutter_pos_offline/logic/cubits/product/product_cubit.dart';
 import 'package:flutter_pos_offline/data/repositories/product_repository.dart';
 import 'package:flutter_pos_offline/logic/cubits/unit/unit_cubit.dart';
@@ -54,7 +51,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
             // or pass the existing one if we can find it. 
             // MainScreen doesn't seem to expose ProductCubit globally (only inside tabs).
             // So we create a new one or use BlocProvider.value if we are in scope.
-            // Dashboard has OrderCubit. POS has PosCubit. Settings has UserCubit.
+            // Dashboard has OrderCubit. Klinik has PosCubit. Settings has UserCubit.
             // ProductListScreen has ProductCubit.
             // So here we validly create a new one using the repository.
             final productRepo = context.read<ProductRepository>();
@@ -126,7 +123,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
                         );
                       }
                     },
-                    title: Text('${po.supplier?.name ?? "Unknown"}'),
+                    title: Text(po.supplier?.name ?? "Unknown"),
                     subtitle: Text('${DateFormatter.formatDate(po.orderDate)} - ${po.statusDisplay}'),
                     trailing: Text(
                       CurrencyFormatter.format(po.totalAmount),

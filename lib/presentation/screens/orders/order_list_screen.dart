@@ -344,7 +344,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              'Tap tombol + untuk membuat order baru',
+              'Tap tombol + untuk membuat penjualan baru',
               style: AppTypography.bodySmall.copyWith(
                 color: AppThemeColors.textSecondary,
               ),

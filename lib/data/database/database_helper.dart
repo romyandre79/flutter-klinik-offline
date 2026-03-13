@@ -8,6 +8,7 @@ import 'package:flutter_pos_offline/core/utils/password_helper.dart';
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
   static Database? _database;
+  static const int _currentVersion = 10;
 
   DatabaseHelper._init();
 
@@ -89,6 +90,7 @@ class DatabaseHelper {
         unit TEXT NOT NULL,
         price INTEGER NOT NULL,
         duration_days INTEGER DEFAULT 3,
+        expire_days INTEGER DEFAULT 0,
         is_active INTEGER DEFAULT 1,
         created_at TEXT DEFAULT CURRENT_TIMESTAMP
       )
@@ -106,6 +108,7 @@ class DatabaseHelper {
         unit TEXT NOT NULL,
         type TEXT NOT NULL, -- service, goods
         duration_days INTEGER,
+        expire_days INTEGER DEFAULT 0,
         image_url TEXT,
         barcode TEXT,
         is_active INTEGER DEFAULT 1,
@@ -181,6 +184,17 @@ class DatabaseHelper {
       )
     ''');
 
+    // Create pengumuman_templates table
+    await db.execute('''
+      CREATE TABLE pengumuman_templates (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        type TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+      )
+    ''');
+
     // Create Suppliers table
     await db.execute('''
       CREATE TABLE suppliers (
@@ -238,6 +252,22 @@ class DatabaseHelper {
       )
     ''');
 
+    // Create Stock Transfers table
+    await db.execute('''
+      CREATE TABLE stock_transfers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        source_product_id INTEGER NOT NULL,
+        target_product_id INTEGER NOT NULL,
+        source_qty REAL NOT NULL,
+        target_qty REAL NOT NULL,
+        multiplier REAL NOT NULL,
+        notes TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (source_product_id) REFERENCES products(id) ON DELETE CASCADE,
+        FOREIGN KEY (target_product_id) REFERENCES products(id) ON DELETE CASCADE
+      )
+    ''');
+
     // Create indexes
     await _createIndexes(db);
 
@@ -270,6 +300,11 @@ class DatabaseHelper {
     // Products indexes
     await db.execute('CREATE INDEX idx_products_type ON products(type)');
     await db.execute('CREATE INDEX idx_products_name ON products(name)');
+    await db.execute('CREATE INDEX idx_products_barcode ON products(barcode)');
+
+    // Stock Transfers indexes
+    await db.execute('CREATE INDEX idx_stock_transfers_source ON stock_transfers(source_product_id)');
+    await db.execute('CREATE INDEX idx_stock_transfers_target ON stock_transfers(target_product_id)');
   }
 
   Future<void> _seedData(Database db) async {
@@ -312,6 +347,7 @@ class DatabaseHelper {
       AppConstants.keyPrinterAddress: '',
       AppConstants.keyLastInvoiceDate: '',
       AppConstants.keyLastInvoiceNumber: '0',
+      'fonnte_token': '',
     };
 
     for (final entry in settings.entries) {
@@ -338,6 +374,18 @@ class DatabaseHelper {
     for (final unit in defaultUnits) {
       await db.insert('units', {'name': unit});
     }
+
+    // Seed default templates
+    await db.insert('pengumuman_templates', {
+      'title': 'Pengingat 30 Hari',
+      'content': 'Halo pelanggan setia,\n\nKami ingin menginformasikan bahwa stok obat [item_name] akan kedaluwarsa dalam 30 hari. Segera dapatkan sebelum kehabisan!\n\nTerima kasih.',
+      'type': 'reminder'
+    });
+    await db.insert('pengumuman_templates', {
+      'title': 'Pengingat 15 Hari',
+      'content': 'Halo pelanggan setia,\n\nKami ingin menginformasikan bahwa stok obat [item_name] akan kedaluwarsa dalam 15 hari. Segera dapatkan sebelum kedaluwarsa!\n\nTerima kasih.',
+      'type': 'reminder'
+    });
   }
 
   Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
@@ -553,6 +601,76 @@ class DatabaseHelper {
         await db.execute('ALTER TABLE products ADD COLUMN barcode TEXT');
         await db.execute('CREATE INDEX idx_products_barcode ON products(barcode)');
       }
+    }
+
+    if (oldVersion < 9) {
+      // Add expire_days to services and products
+      final serviceCols = await db.rawQuery('PRAGMA table_info(services)');
+      if (!serviceCols.any((col) => col['name'] == 'expire_days')) {
+        await db.execute('ALTER TABLE services ADD COLUMN expire_days INTEGER DEFAULT 0');
+      }
+
+      final productCols = await db.rawQuery('PRAGMA table_info(products)');
+      if (!productCols.any((col) => col['name'] == 'expire_days')) {
+        await db.execute('ALTER TABLE products ADD COLUMN expire_days INTEGER DEFAULT 0');
+      }
+
+      // Create pengumuman_templates
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS pengumuman_templates (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          title TEXT NOT NULL,
+          content TEXT NOT NULL,
+          type TEXT,
+          created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+      ''');
+
+      // Seed default templates if empty
+      final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM pengumuman_templates'));
+      if (count == 0 || count == null) {
+        await db.insert('pengumuman_templates', {
+          'title': 'Pengingat 30 Hari',
+          'content': 'Halo pelanggan setia,\n\nKami ingin menginformasikan bahwa stok obat [item_name] akan kedaluwarsa dalam 30 hari. Segera dapatkan sebelum kehabisan!\n\nTerima kasih.',
+          'type': 'reminder'
+        });
+        await db.insert('pengumuman_templates', {
+          'title': 'Pengingat 15 Hari',
+          'content': 'Halo pelanggan setia,\n\nKami ingin menginformasikan bahwa stok obat [item_name] akan kedaluwarsa dalam 15 hari. Segera dapatkan sebelum kedaluwarsa!\n\nTerima kasih.',
+          'type': 'reminder'
+        });
+      }
+
+      // Ensure fonnte_token exists in app_settings
+      final fonnteSetting = await db.rawQuery("SELECT * FROM app_settings WHERE key = 'fonnte_token'");
+      if (fonnteSetting.isEmpty) {
+        await db.insert('app_settings', {
+          'key': 'fonnte_token',
+          'value': ''
+        });
+      }
+    }
+
+    if (oldVersion < 10) {
+      // Create Stock Transfers table
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS stock_transfers (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          source_product_id INTEGER NOT NULL,
+          target_product_id INTEGER NOT NULL,
+          source_qty REAL NOT NULL,
+          target_qty REAL NOT NULL,
+          multiplier REAL NOT NULL,
+          notes TEXT,
+          created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (source_product_id) REFERENCES products(id) ON DELETE CASCADE,
+          FOREIGN KEY (target_product_id) REFERENCES products(id) ON DELETE CASCADE
+        )
+      ''');
+
+      // Create indexes for stock_transfers
+      await db.execute('CREATE INDEX IF NOT EXISTS idx_stock_transfers_source ON stock_transfers(source_product_id)');
+      await db.execute('CREATE INDEX IF NOT EXISTS idx_stock_transfers_target ON stock_transfers(target_product_id)');
     }
   }
 

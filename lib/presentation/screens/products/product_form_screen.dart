@@ -11,7 +11,6 @@ import 'package:flutter_pos_offline/data/models/product.dart';
 import 'package:flutter_pos_offline/logic/cubits/product/product_cubit.dart';
 import 'package:flutter_pos_offline/logic/cubits/auth/auth_cubit.dart';
 import 'package:flutter_pos_offline/logic/cubits/auth/auth_state.dart';
-import 'package:flutter_pos_offline/logic/cubits/auth/auth_state.dart';
 import 'package:flutter_pos_offline/data/models/user.dart';
 import 'package:flutter_pos_offline/data/models/unit.dart';
 import 'package:flutter_pos_offline/logic/cubits/unit/unit_cubit.dart';

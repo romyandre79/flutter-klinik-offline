@@ -24,6 +24,8 @@ import 'package:flutter_pos_offline/data/repositories/unit_repository.dart';
 import 'package:flutter_pos_offline/logic/cubits/unit/unit_cubit.dart';
 import 'package:flutter_pos_offline/presentation/screens/settings/unit_list_screen.dart';
 import 'package:flutter_pos_offline/data/services/database_service.dart';
+import 'package:flutter_pos_offline/logic/cubits/pengumuman/pengumuman_cubit.dart';
+import 'package:flutter_pos_offline/presentation/screens/settings/pengumuman_template_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -226,7 +228,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildAboutRow('Creator', 'Kreatif MajuMU'),
+            _buildAboutRow('Creator', 'Kreatif'),
             const SizedBox(height: AppSpacing.md),
             _buildAboutRow('PhoneNo', '081932701147'),
             const SizedBox(height: AppSpacing.md),
@@ -616,6 +618,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               _buildDivider(),
                               _buildSettingTile(
                                 context: context,
+                                icon: Icons.vpn_key,
+                                title: 'Fonnte API Token',
+                                subtitle: (storeInfo?.fonnteToken == null ||
+                                        storeInfo!.fonnteToken.isEmpty)
+                                    ? 'Belum diatur'
+                                    : 'Sudah diatur (ketuk untuk ubah)',
+                                onTap: () => _showEditDialog(
+                                  title: 'Ubah Token Fonnte',
+                                  currentValue: storeInfo?.fonnteToken ?? '',
+                                  hint: 'Masukkan token API Fonnte',
+                                  icon: Icons.vpn_key,
+                                  onSave: (value) =>
+                                      _settingsCubit.updateFonnteToken(value),
+                                ),
+                              ),
+                              _buildDivider(),
+                              _buildSettingTile(
+                                context: context,
                                 icon: Icons.print,
                                 title: 'Pengaturan Printer',
                                 subtitle: 'Atur koneksi printer thermal',
@@ -817,6 +837,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             child: const Text('Hapus Data'),
                                           ),
                                         ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                                _buildDivider(),
+                                _buildSettingTile(
+                                  context: context,
+                                  icon: Icons.bookmarks_outlined,
+                                  title: 'Master Template',
+                                  subtitle: 'Kelola template pesan kustomer',
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const PengumumanTemplateScreen(),
                                       ),
                                     );
                                   },

@@ -2,10 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_pos_offline/core/constants/app_constants.dart';
 import 'package:flutter_pos_offline/data/database/database_helper.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:path_provider/path_provider.dart';
 
 class DatabaseService {
   final DatabaseHelper _databaseHelper;
@@ -38,7 +35,9 @@ class DatabaseService {
       }
     } else {
       // Android/iOS: Share the file
-      await Share.shareXFiles([XFile(dbPath)], text: 'Database Backup');
+      await SharePlus.instance.share(
+        ShareParams(files: [XFile(dbPath)], text: 'Database Backup'),
+      );
     }
   }
 

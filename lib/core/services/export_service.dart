@@ -6,8 +6,6 @@ import 'package:share_plus/share_plus.dart' show SharePlus, ShareParams, XFile;
 import 'package:flutter_pos_offline/data/models/order.dart';
 import 'package:flutter_pos_offline/data/models/purchase_order.dart';
 import 'package:flutter_pos_offline/data/models/product.dart';
-import 'package:flutter_pos_offline/data/models/order_item.dart';
-import 'package:flutter_pos_offline/data/models/purchase_order_item.dart';
 import 'package:flutter_pos_offline/core/utils/currency_formatter.dart';
 import 'package:flutter_pos_offline/core/utils/date_formatter.dart';
 import 'package:flutter_pos_offline/logic/cubits/report/report_state.dart';

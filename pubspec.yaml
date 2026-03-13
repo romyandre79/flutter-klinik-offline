@@ -1,5 +1,5 @@
 name: flutter_pos_offline
-description: "Aplikasi Kasir POS Offline"
+description: "Aplikasi Kasir Klinik Offline"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,6 +9,7 @@ environment:
 dependencies:
   crypto: ^3.0.6
   cupertino_icons: ^1.0.8
+  http: ^1.2.1
   equatable: ^2.0.8
   esc_pos_utils_plus: ^2.0.4
   excel: ^4.0.6
@@ -40,6 +41,7 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
 

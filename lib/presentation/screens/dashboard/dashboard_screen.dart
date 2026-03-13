@@ -23,6 +23,10 @@ import 'package:flutter_pos_offline/data/repositories/purchase_order_repository.
 import 'package:flutter_pos_offline/logic/cubits/supplier/supplier_cubit.dart';
 import 'package:flutter_pos_offline/data/repositories/supplier_repository.dart';
 import 'package:flutter_pos_offline/presentation/screens/pos/pos_screen.dart';
+import 'package:flutter_pos_offline/presentation/screens/pengumuman/pengumuman_screen.dart';
+import 'package:flutter_pos_offline/presentation/screens/reminder/reminder_screen.dart';
+import 'package:flutter_pos_offline/presentation/screens/inventory/stock_transfer_screen.dart';
+import 'package:flutter_pos_offline/logic/cubits/pengumuman/pengumuman_cubit.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Function(int index)? onSwitchTab;
@@ -373,7 +377,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   if (widget.onSwitchTab != null) {
                     widget.onSwitchTab!(1); // Index 1 is usually Sales/Kasir
                   } else {
-                    // Fallback (keep existing behavior just in case)
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -441,6 +444,57 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         create: (_) => PrinterCubit(),
                         child: const PrinterSettingsScreen(),
                       ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Row(
+          children: [
+            Expanded(
+              child: _buildQuickActionItem(
+                icon: Icons.campaign,
+                label: 'Broadcast',
+                color: Colors.purple,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const PengumumanScreen(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: _buildQuickActionItem(
+                icon: Icons.notification_important,
+                label: 'Pengingat',
+                color: Colors.orange,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ReminderScreen(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Expanded(
+              child: _buildQuickActionItem(
+                icon: Icons.swap_horiz,
+                label: 'Transfer Stok',
+                color: Colors.teal,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const StockTransferScreen(),
                     ),
                   );
                 },

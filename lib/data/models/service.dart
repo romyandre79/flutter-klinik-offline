@@ -39,6 +39,7 @@ class Service extends Equatable {
   final ServiceUnit unit;
   final int price;
   final int durationDays;
+  final int expireDays;
   final bool isActive;
   final DateTime? createdAt;
 
@@ -48,6 +49,7 @@ class Service extends Equatable {
     required this.unit,
     required this.price,
     this.durationDays = 3,
+    this.expireDays = 0,
     this.isActive = true,
     this.createdAt,
   });
@@ -59,6 +61,7 @@ class Service extends Equatable {
       'unit': unit.value,
       'price': price,
       'duration_days': durationDays,
+      'expire_days': expireDays,
       'is_active': isActive ? 1 : 0,
       'created_at': createdAt?.toIso8601String(),
     };
@@ -71,6 +74,7 @@ class Service extends Equatable {
       unit: ServiceUnitExtension.fromString(map['unit'] as String),
       price: map['price'] as int,
       durationDays: (map['duration_days'] as int?) ?? 3,
+      expireDays: (map['expire_days'] as int?) ?? 0,
       isActive: (map['is_active'] as int?) == 1,
       createdAt: map['created_at'] != null
           ? DateTime.parse(map['created_at'] as String)
@@ -84,6 +88,7 @@ class Service extends Equatable {
     ServiceUnit? unit,
     int? price,
     int? durationDays,
+    int? expireDays,
     bool? isActive,
     DateTime? createdAt,
   }) {
@@ -93,6 +98,7 @@ class Service extends Equatable {
       unit: unit ?? this.unit,
       price: price ?? this.price,
       durationDays: durationDays ?? this.durationDays,
+      expireDays: expireDays ?? this.expireDays,
       isActive: isActive ?? this.isActive,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -105,6 +111,7 @@ class Service extends Equatable {
         unit,
         price,
         durationDays,
+        expireDays,
         isActive,
         createdAt,
       ];

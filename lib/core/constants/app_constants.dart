@@ -2,21 +2,21 @@ class AppConstants {
   AppConstants._();
 
   // App Info
-  static const String appName = 'Kreatif MajuMU - POS Offline';
+  static const String appName = 'Kreatif - Klinik Offline';
   static const String appVersion = '1.0.0';
-  static const String appDescription = 'Aplikasi Kasir POS Offline - Full Offline, Jalan Tanpa Internet!';
+  static const String appDescription = 'Aplikasi Kasir Klinik Offline - Full Offline, Jalan Tanpa Internet!';
 
   // Database
-  static const String databaseName = 'kreatif_pos_offline.db';
-  static const int databaseVersion = 8;
+  static const String databaseName = 'kreatif_klinik_offline.db';
+  static const int databaseVersion = 10;
 
   // Invoice
-  static const String defaultInvoicePrefix = 'POS';
+  static const String defaultInvoicePrefix = 'Klinik';
   static const int invoiceNumberLength = 6;
 
   // Default Values
   static const String defaultPaymentMethod = 'cash';
-  static const int defaultServiceDuration = 1; // POS usually instant, but keep for compatibility
+  static const int defaultServiceDuration = 1; // Klinik usually instant, but keep for compatibility
   static const int defaultPageSize = 20;
   static const int recentOrdersLimit = 5;
 

@@ -17,6 +17,9 @@ class CustomerRepository {
     return result.map((map) => Customer.fromMap(map)).toList();
   }
 
+  /// Alias for getAllCustomers to support external callers
+  Future<List<Customer>> getCustomers() => getAllCustomers();
+
   /// Get customer by ID
   Future<Customer?> getCustomerById(int id) async {
     final db = await _databaseHelper.database;
@@ -284,7 +287,7 @@ class CustomerRepository {
     final batch = db.batch();
 
     // Get existing phones/names to avoid duplicates is expensive for large datasets
-    // But for offline POS, dataset is likely small (< 10k).
+    // But for offline Klinik, dataset is likely small (< 10k).
     // Let's just do a simple check or rely on batch.
     
     // For now, allow potential duplicates via import or assume user cleaned data.

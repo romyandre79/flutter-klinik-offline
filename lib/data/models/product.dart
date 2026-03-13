@@ -43,6 +43,7 @@ class Product extends Equatable {
   final String unit; // kg, pcs, pack, etc.
   final ProductType type;
   final int? durationDays; // Only for services
+  final int expireDays; // New field for expiration
   final String? imageUrl;
   final String? barcode; // New field for barcode
   final bool isActive;
@@ -59,6 +60,7 @@ class Product extends Equatable {
     required this.unit,
     required this.type,
     this.durationDays,
+    this.expireDays = 0,
     this.imageUrl,
     this.barcode,
     this.isActive = true,
@@ -80,6 +82,7 @@ class Product extends Equatable {
       'unit': unit,
       'type': type.value,
       'duration_days': durationDays,
+      'expire_days': expireDays,
       'image_url': imageUrl,
       'barcode': barcode,
       'is_active': isActive ? 1 : 0,
@@ -99,6 +102,7 @@ class Product extends Equatable {
       unit: map['unit'] as String,
       type: ProductTypeExtension.fromString(map['type'] as String),
       durationDays: map['duration_days'] as int?,
+      expireDays: (map['expire_days'] as int?) ?? 0,
       imageUrl: map['image_url'] as String?,
       barcode: map['barcode'] as String?,
       isActive: (map['is_active'] as int?) == 1,
@@ -123,6 +127,7 @@ class Product extends Equatable {
     int? durationDays,
     String? imageUrl,
     String? barcode,
+    int? expireDays,
     bool? isActive,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -137,6 +142,7 @@ class Product extends Equatable {
       unit: unit ?? this.unit,
       type: type ?? this.type,
       durationDays: durationDays ?? this.durationDays,
+      expireDays: expireDays ?? this.expireDays,
       imageUrl: imageUrl ?? this.imageUrl,
       barcode: barcode ?? this.barcode,
       isActive: isActive ?? this.isActive,
@@ -156,6 +162,7 @@ class Product extends Equatable {
         unit,
         type,
         durationDays,
+        expireDays,
         imageUrl,
         barcode,
         isActive,

@@ -11,7 +11,6 @@ import 'package:flutter_pos_offline/logic/cubits/auth/auth_state.dart';
 import 'package:flutter_pos_offline/data/models/user.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SupplierListScreen extends StatefulWidget {
@@ -83,8 +82,10 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
           action: SnackBarAction(
             label: 'Buka',
             textColor: Colors.white,
-            onPressed: () {
-               SharePlus.instance.share(ShareParams(files: [XFile(filePath)], text: 'Template Import Supplier'));
+            onPressed: () async {
+               await SharePlus.instance.share(
+                 ShareParams(files: [XFile(filePath)], text: 'Template Import Supplier'),
+               );
             },
           ),
         ),

@@ -115,10 +115,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   final pdfFile = await PdfService().generateOrderInvoice(order);
                   
                   // Share PDF
-                  await Share.shareXFiles(
-                    [XFile(pdfFile.path)],
-                    text: 'Struk Order ${order.invoiceNumber}',
-                    subject: 'Struk Order ${order.invoiceNumber}',
+                  await SharePlus.instance.share(
+                    ShareParams(
+                      files: [XFile(pdfFile.path)],
+                      text: 'Struk Penjualan ${order.invoiceNumber}',
+                    ),
                   );
                 } catch (e) {
                   messenger.showSnackBar(
