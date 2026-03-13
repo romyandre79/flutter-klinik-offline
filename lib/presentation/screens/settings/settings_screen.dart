@@ -503,7 +503,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                             // Service Management Section
                           _buildSection(
-                            title: 'Layanan',
+                            title: 'Master Data',
                             children: [
                               if (user != null && (user.role == UserRole.owner || user.canAccessItems))
                                 _buildSettingTile(
@@ -531,7 +531,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 _buildSettingTile(
                                   context: context,
                                   icon: Icons.people_outline,
-                                  title: 'Supplier',
+                                  title: 'Master Supplier',
                                   subtitle: 'Kelola data supplier',
                                   onTap: () {
                                     Navigator.push(
@@ -565,17 +565,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   );
                                 },
                               ),
-                            ],
-                          ),
-
-                          // Customer Management Section
-                          _buildSection(
-                            title: 'Pelanggan',
-                            children: [
+                              if (user != null) _buildDivider(),
                               _buildSettingTile(
                                 context: context,
                                 icon: Icons.people_alt,
-                                title: 'Kelola Pelanggan',
+                                title: 'Master Pelanggan',
                                 subtitle: 'Lihat dan kelola data pelanggan',
                                 onTap: () {
                                   Navigator.push(
@@ -647,6 +641,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         create: (_) => PrinterCubit(),
                                         child: const PrinterSettingsScreen(),
                                       ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              _buildDivider(),
+                              _buildSettingTile(
+                                context: context,
+                                icon: Icons.bookmarks_outlined,
+                                title: 'Master Template',
+                                subtitle: 'Kelola template pesan kustomer',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const PengumumanTemplateScreen(),
                                     ),
                                   );
                                 },
@@ -837,21 +846,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             child: const Text('Hapus Data'),
                                           ),
                                         ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                                _buildDivider(),
-                                _buildSettingTile(
-                                  context: context,
-                                  icon: Icons.bookmarks_outlined,
-                                  title: 'Master Template',
-                                  subtitle: 'Kelola template pesan kustomer',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const PengumumanTemplateScreen(),
                                       ),
                                     );
                                   },

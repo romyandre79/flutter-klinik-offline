@@ -64,9 +64,6 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
                     BlocProvider.value(value: poCubit),
                     BlocProvider.value(value: supplierCubit),
                     BlocProvider(
-                      create: (_) => ProductCubit(productRepo)..loadProducts(),
-                    ),
-                    BlocProvider(
                       create: (_) => UnitCubit(UnitRepository())..loadUnits(),
                     ),
                   ],

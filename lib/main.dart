@@ -23,6 +23,7 @@ import 'package:flutter_pos_offline/data/repositories/purchase_order_repository.
 import 'package:flutter_pos_offline/data/repositories/product_repository.dart';
 import 'package:flutter_pos_offline/data/repositories/payment_repository.dart'; // Add import
 import 'package:flutter_pos_offline/logic/cubits/order/order_cubit.dart';
+import 'package:flutter_pos_offline/logic/cubits/product/product_cubit.dart';
 import 'package:flutter_pos_offline/core/services/notification_service.dart';
 import 'package:flutter_pos_offline/data/repositories/pengumuman_template_repository.dart';
 import 'package:flutter_pos_offline/data/repositories/stock_transfer_repository.dart';
@@ -106,6 +107,11 @@ class MyApp extends StatelessWidget {
             create: (context) => StockTransferCubit(
               repository: context.read<StockTransferRepository>(),
             )..loadTransfers(),
+          ),
+          BlocProvider(
+            create: (context) => ProductCubit(
+              context.read<ProductRepository>(),
+            )..loadProducts(),
           ),
         ],
         child: MaterialApp(
